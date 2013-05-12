@@ -55,5 +55,7 @@ public interface Executor {
   void close(boolean forceRollback);
 
   boolean isClosed();
-
+  
+  void setExecutorWrapper(Executor executor);
+  
 }

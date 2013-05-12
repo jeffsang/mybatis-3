@@ -52,6 +52,7 @@ public abstract class BaseExecutor implements Executor {
   protected PerpetualCache localCache;
   protected PerpetualCache localOutputParameterCache;
   protected Configuration configuration;
+  protected Executor wrapper = this;
 
   protected int queryStack = 0;
   private boolean closed;
@@ -274,6 +275,10 @@ public abstract class BaseExecutor implements Executor {
     } else {
       return connection;
     }
+  }
+  
+  public void setExecutorWrapper(Executor wrapper) {
+    this.wrapper = wrapper;
   }
 
   private static class DeferredLoad {

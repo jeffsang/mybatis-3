@@ -46,6 +46,7 @@ public class CachingExecutor implements Executor {
   public CachingExecutor(Executor delegate, boolean autoCommit) {
     this.delegate = delegate;
     this.autoCommit = autoCommit;
+    delegate.setExecutorWrapper(this);
   }
 
   public Transaction getTransaction() {
@@ -141,11 +142,13 @@ public class CachingExecutor implements Executor {
   }
 
   public boolean isCached(MappedStatement ms, CacheKey key) {
-    throw new UnsupportedOperationException("The CachingExecutor should not be used by result loaders and thus isCached() should never be called.");
+//    throw new UnsupportedOperationException("The CachingExecutor should not be used by result loaders and thus isCached() should never be called.");
+    return delegate.isCached(ms, key);
   }
 
   public void deferLoad(MappedStatement ms, MetaObject resultObject, String property, CacheKey key, Class<?> targetType) {
-    throw new UnsupportedOperationException("The CachingExecutor should not be used by result loaders and thus deferLoad() should never be called.");
+//    throw new UnsupportedOperationException("The CachingExecutor should not be used by result loaders and thus deferLoad() should never be called.");
+    delegate.deferLoad(ms, resultObject, property, key, targetType);
   }
 
   public void clearLocalCache() {
@@ -158,6 +161,12 @@ public class CachingExecutor implements Executor {
       dirty = true; // issue #524. Disable using cached data for this session
       tcm.clear(cache);
     }
+  }
+
+  @Override
+  public void setExecutorWrapper(Executor executor) {
+    // TODO Auto-generated method stub
+    
   }
 
 }
